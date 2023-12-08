@@ -3642,6 +3642,10 @@ typedef signed int s32;
 #define pmd_index_l5_4k(addr) (((addr) >> PMD_SHIFT) & (PTRS_PER_PMD - 1))
 #define pte_index_l5_4k(addr) (((addr) >> PAGESHIFT()) & (PTRS_PER_PTE - 1))
 
+
+/* machdep->flags */
+
+#define KSYMS_START	(0x1)
 #define VM_L3_4K	(0x2)
 #define VM_L3_2M	(0x4)
 #define VM_L3_1G	(0x8)
@@ -3651,6 +3655,7 @@ typedef signed int s32;
 #define VM_L5_4K	(0x80)
 #define VM_L5_2M	(0x100)
 #define VM_L5_1G	(0x200)
+#define IRQ_STACKS	(0x400)
 
 #define VM_FLAGS	(VM_L3_4K | VM_L3_2M | VM_L3_1G | \
 			 VM_L4_4K | VM_L4_2M | VM_L4_1G | \
@@ -7012,8 +7017,6 @@ struct riscv64_unwind_frame {
 	ulong pc;
 };
 
-#define KSYMS_START	(0x1)
-
 struct machine_specific {
 	ulong phys_base;
 	ulong page_offset;
@@ -7043,6 +7046,8 @@ struct machine_specific {
 	ulong struct_page_size;
 
 	struct riscv64_register *crash_task_regs;
+	ulong irq_stack_size;
+	ulong *irq_stacks;
 };
 /* from arch/riscv/include/asm/pgtable-bits.h */
 #define _PAGE_PRESENT	(machdep->machspec->_page_present)
